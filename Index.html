@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fe2rless | Dibojit - Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-2: #1a1a1a;
+      --text: #f5f5f5;
+      --text-dim: #888888;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --border: #222222;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    #particles-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      opacity: 0.6;
+    }
+    .content { position: relative; z-index: 1; }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 1.2rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,10,10,0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      animation: slideDown 0.8s ease-out;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .logo {
+      font-size: 1.5rem; font-weight: 800;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-dim); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); transform: translateY(-2px); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      padding: 0 5%;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 1rem; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 0.85rem; color: var(--text-dim);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22c55e; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.25rem; color: var(--text-dim);
+      max-width: 600px; margin-bottom: 2.5rem;
+      animation: fadeInUp 1s ease-out 0.7s both;
+    }
+    .hero-buttons {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeInUp 1s ease-out 0.9s both;
+    }
+    .btn {
+      padding: 0.9rem 2rem; border-radius: 12px;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; border: none;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+    .btn-secondary {
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-2); border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sections */
+    section { padding: 6rem 5%; max-width: 1200px; margin: 0 auto; }
+    .section-title {
+      font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;
+      text-align: center;
+    }
+    .section-subtitle {
+      text-align: center; color: var(--text-dim); margin-bottom: 4rem;
+      font-size: 1.1rem;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .about-text { animation: fadeInLeft 1s ease-out; }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .about-text h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .about-text p { color: var(--text-dim); margin-bottom: 1.5rem; }
+    .skills {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+    }
+    .skill-tag {
+      padding: 0.4rem 1rem; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 0.85rem; color: var(--text-dim);
+      transition: all 0.3s;
+    }
+    .skill-tag:hover {
+      border-color: var(--accent); color: var(--text);
+      transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99,102,241,0.15);
+    }
+    .about-visual {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      animation: fadeInRight 1s ease-out;
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem; text-align: center;
+      transition: all 0.4s;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(99,102,241,0.1);
+    }
+    .stat-card .num {
+      font-size: 2.5rem; font-weight: 800;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-card .label { color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem; }
+
+    /* Projects */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+      transition: all 0.4s; position: relative;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 20px; padding: 1px;
+      background: linear-gradient(135deg, transparent, var(--accent), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .project-img {
+      height: 180px; background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; position: relative; overflow: hidden;
+    }
+    .project-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, var(--surface) 100%);
+    }
+    .project-body { padding: 1.5rem; }
+    .project-body h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .project-body p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; }
+    .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .project-tag {
+      padding: 0.25rem 0.7rem; border-radius: 6px;
+      background: rgba(99,102,241,0.1); color: var(--accent);
+      font-size: 0.75rem; font-weight: 600;
+    }
+
+    /* Contact */
+    .contact-container {
+      max-width: 600px; margin: 0 auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; padding: 3rem;
+      animation: fadeInUp 1s ease-out;
+    }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block; margin-bottom: 0.5rem;
+      font-size: 0.9rem; font-weight: 500; color: var(--text-dim);
+    }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 0.9rem 1rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-size: 1rem;
+      transition: all 0.3s; outline: none;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+
+    /* Footer */
+    footer {
+      text-align: center; padding: 3rem 5%;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim); font-size: 0.9rem;
+    }
+    .socials { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; }
+    .social {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim); text-decoration: none; font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+    .social:hover {
+      background: var(--accent); color: white; border-color: var(--accent);
+      transform: translateY(-3px) rotate(5deg);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: all 0.8s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 5%; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="content">
+    <nav>
+      <div class="logo">Fe2rless</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="dot"></span> Available for work
+      </div>
+      <h1>Hey, I'm <span class="gradient">Dibojit</span></h1>
+      <p>Full-stack developer crafting bold, performant, and user-centered web experiences. I keep it up. ⏳☠️</p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+      </div>
+    </section>
+
+    <section id="about" class="reveal">
+      <h2 class="section-title">About Me</h2>
+      <p class="section-subtitle">A little bit about who I am and what I do</p>
+      <div class="about-grid">
+        <div class="about-text">
+          <h3>Building things that <span class="gradient">matter</span></h3>
+          <p>I'm Dibojit — a developer who believes in shipping fast, learning faster, and keeping it up no matter what. I specialize in building modern web apps with clean architecture and killer UI.</p>
+          <p>When I'm not coding, I'm probably exploring new tech, breaking things on purpose, or vibing to music while debugging.</p>
+          <div class="skills">
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Git</span>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="stat-card">
+            <div class="num">1+</div>
+            <div class="label">Years Experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">5+</div>
+            <div class="label">Projects Shipped</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">∞</div>
+            <div class="label">Cups of Coffee</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">100%</div>
+            <div class="label">Kept It Up</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal">
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-subtitle">A selection of my recent work</p>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-img">⏳☠️</div>
+          <div class="project-body">
+            <h3>Healper</h3>
+            <p>I kept it up. A bold web app built to solve real problems with clean React architecture and sharp UI.</p>
+            <div class="project-tags">
+              <span class="project-tag">React</span>
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">CSS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal">
+      <h2 class="section-title">Let's Connect</h2>
+      <p class="section-subtitle">Have a project in mind? Let's talk!</p>
+      <div class="contact-container">
+        <form onsubmit="event.preventDefault(); this.innerHTML='<div style=text-align:center;padding:2rem 0><div style=font-size:3rem;margin-bottom:1rem>✅</div><h3 style=margin-bottom:0.5rem>Message Sent!</h3><p style=color:#888>Thanks for reaching out. I\'ll get back to you soon.</p></div>';">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Tell me about your project..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send Message →</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div class="socials">
+        <a href="#" class="social">𝕏</a>
+        <a href="#" class="social">in</a>
+        <a href="#" class="social">gh</a>
+        <a href="#" class="social">✉</a>
+      </div>
+      <p>© 2026 Fe2rless (Dibojit) — Built with passion & pixels</p>
+    </footer>
+  </div>
+
+  <script>
+    // Particle System
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX; mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        if (mouse.x != null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 150) {
+            this.x -= dx * 0.02;
+            this.y -= dy * 0.02;
+          }
+        }
+      }
+      draw() {
+        ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(window.innerWidth / 10, 100);
+      for (let i = 0; i < count; i++) particles.push(new Particle());
+    }
+    initParticles();
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
+            ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - dist/120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Scroll Reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
